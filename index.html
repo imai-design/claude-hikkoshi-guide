@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>Claude引っ越しガイド ｜ RYOSEIWORLD</title>
+<meta name="description" content="Claude Codeの記憶を新しいPCへ引っ越す方法。記憶はぜんぶファイルなので、箱に詰めて運べます。かんたんな方法と完全版の2通りを解説。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Archivo+Black&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F5F7FA;
+    --card: #FFFFFF;
+    --ink: #1B2A4A;
+    --sub: #5A6B85;
+    --blue: #2B5DD7;
+    --blue-soft: #E8EEFB;
+    --box: #C8A276;
+    --box-deep: #A9834F;
+    --line: #D9DFE8;
+    --ok: #1E7F4F;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Zen Kaku Gothic New", "Hiragino Sans", sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 2;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--blue); color: #fff; }
+  a { color: var(--blue); }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- hero ---------- */
+  .hero { padding: 72px 0 56px; border-bottom: 1px solid var(--line); background: #fff; }
+  .kicker {
+    display: inline-block;
+    font-family: "Archivo Black", sans-serif;
+    font-size: 11px;
+    letter-spacing: .22em;
+    color: var(--blue);
+    border: 2px solid var(--blue);
+    padding: 4px 14px;
+    border-radius: 999px;
+    margin-bottom: 22px;
+  }
+  h1 {
+    font-weight: 900;
+    font-size: clamp(30px, 6vw, 46px);
+    line-height: 1.45;
+    letter-spacing: .02em;
+  }
+  .hero-lead { margin-top: 18px; color: var(--sub); font-weight: 500; }
+
+  /* ---------- 図解（旧PC → 箱 → 新PC） ---------- */
+  .diagram {
+    margin: 46px 0 8px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: clamp(12px, 4vw, 36px);
+  }
+  .pc { text-align: center; }
+  .pc .screen {
+    width: clamp(90px, 18vw, 130px);
+    height: clamp(60px, 12vw, 84px);
+    border: 3px solid var(--ink);
+    border-radius: 8px 8px 2px 2px;
+    background: #fff;
+    position: relative;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+  .pc .base {
+    width: clamp(110px, 22vw, 158px);
+    height: 8px;
+    background: var(--ink);
+    border-radius: 0 0 8px 8px;
+    margin: 0 auto;
+  }
+  .pc .label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--sub);
+    margin-top: 10px;
+    letter-spacing: .1em;
+  }
+  .file {
+    position: absolute;
+    width: 26%;
+    height: 34%;
+    background: var(--blue-soft);
+    border: 2px solid var(--blue);
+    border-radius: 3px;
+  }
+  .file::before {
+    content: "";
+    position: absolute;
+    left: 15%; top: 25%;
+    width: 70%; height: 2px;
+    background: var(--blue);
+    box-shadow: 0 6px 0 var(--blue);
+  }
+  .old .file:nth-child(1) { left: 10%; top: 14%; }
+  .old .file:nth-child(2) { left: 40%; top: 30%; }
+  .old .file:nth-child(3) { left: 66%; top: 12%; transform: rotate(6deg); }
+  .new .screen { border-style: dashed; }
+  .new .file { left: 37%; top: 24%; opacity: 0; animation: arrive 1.2s ease-out 1.6s forwards; }
+  @keyframes arrive { to { opacity: 1; } }
+
+  .arrow {
+    font-family: "Archivo Black", sans-serif;
+    color: var(--blue);
+    font-size: clamp(18px, 4vw, 26px);
+    padding-bottom: 34px;
+    letter-spacing: -.05em;
+  }
+
+  .carton { text-align: center; position: relative; }
+  .carton .body {
+    width: clamp(84px, 16vw, 112px);
+    height: clamp(58px, 11vw, 76px);
+    background: var(--box);
+    border: 3px solid var(--box-deep);
+    border-radius: 4px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+  .carton .body::before {
+    content: "";
+    position: absolute;
+    left: 50%; top: 0;
+    transform: translateX(-50%);
+    width: 16%; height: 100%;
+    background: rgba(255,255,255,.55);
+  }
+  .carton .flap {
+    position: absolute;
+    top: -12px;
+    width: 46%;
+    height: 12px;
+    background: var(--box);
+    border: 3px solid var(--box-deep);
+    border-bottom: none;
+  }
+  .carton .flap.l { left: 2%; transform: rotate(-8deg); transform-origin: bottom right; }
+  .carton .flap.r { right: 2%; transform: rotate(8deg); transform-origin: bottom left; }
+  .carton .file {
+    left: 34%; top: 26%;
+    animation: packIn 1.2s ease-in .3s forwards;
+  }
+  @keyframes packIn {
+    from { transform: translateY(-160%) rotate(-8deg); }
+    to   { transform: translateY(0) rotate(0); }
+  }
+  .tag {
+    position: absolute;
+    right: -14px; bottom: -14px;
+    background: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 900;
+    padding: 3px 10px 3px 16px;
+    letter-spacing: .12em;
+    transform: rotate(-6deg);
+  }
+  .tag::before {
+    content: "";
+    position: absolute;
+    left: 5px; top: 50%;
+    transform: translateY(-50%);
+    width: 5px; height: 5px;
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    background: #fff;
+  }
+  .carton .label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--sub);
+    margin-top: 14px;
+    letter-spacing: .1em;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .carton .file { animation: none; }
+    .new .file { animation: none; opacity: 1; }
+  }
+
+  /* ---------- 本文共通 ---------- */
+  section { padding: 56px 0; }
+  section + section { border-top: 1px solid var(--line); }
+  h2 {
+    font-weight: 900;
+    font-size: clamp(22px, 4.6vw, 30px);
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .h2-sub { color: var(--sub); font-weight: 500; margin-bottom: 28px; }
+
+  .core {
+    background: var(--ink);
+    color: #fff;
+    border-radius: 16px;
+    padding: 40px 32px;
+    margin-top: 40px;
+  }
+  .core .big {
+    font-weight: 900;
+    font-size: clamp(24px, 5vw, 34px);
+    line-height: 1.6;
+  }
+  .core .big em { font-style: normal; color: #9DB9F5; }
+  .core p { margin-top: 14px; color: #C6D2E8; font-weight: 500; }
+
+  /* ---------- 分岐カード ---------- */
+  .routes { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 8px; }
+  @media (max-width: 640px) { .routes { grid-template-columns: 1fr; } }
+  .route {
+    display: block;
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--card);
+    border: 2px solid var(--line);
+    border-radius: 14px;
+    padding: 26px 24px;
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  .route:hover { border-color: var(--blue); transform: translateY(-2px); }
+  .route .badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: .1em;
+    padding: 2px 12px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+  .route.a .badge { background: var(--blue); color: #fff; }
+  .route.b .badge { background: var(--blue-soft); color: var(--blue); }
+  .route h3 { font-size: 19px; font-weight: 900; line-height: 1.6; }
+  .route p { color: var(--sub); font-size: 14px; margin-top: 8px; line-height: 1.9; }
+
+  /* ---------- ステップ ---------- */
+  .step { display: flex; gap: 18px; margin-top: 30px; }
+  .step-no {
+    flex: 0 0 auto;
+    font-family: "Archivo Black", sans-serif;
+    font-size: 13px;
+    background: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 3px;
+    padding: 4px 10px 4px 20px;
+    height: fit-content;
+    letter-spacing: .08em;
+    position: relative;
+    transform: rotate(-3deg);
+  }
+  .step-no::before {
+    content: "";
+    position: absolute;
+    left: 7px; top: 50%;
+    transform: translateY(-50%);
+    width: 5px; height: 5px;
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+  }
+  .step-body { flex: 1; min-width: 0; }
+  .step-body h4 { font-size: 17px; font-weight: 700; line-height: 1.7; }
+  .step-body p { color: var(--sub); font-size: 15px; margin-top: 6px; }
+
+  /* ---------- コピー枠 ---------- */
+  .copybox {
+    margin-top: 14px;
+    background: var(--card);
+    border: 2px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .copybox .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: var(--blue-soft);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--blue);
+  }
+  .copybox button {
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--blue);
+    border: none;
+    border-radius: 8px;
+    padding: 7px 16px;
+    cursor: pointer;
+  }
+  .copybox button:hover { background: #1F4BB8; }
+  .copybox button.done { background: var(--ok); }
+  .copybox .text {
+    padding: 16px 18px;
+    font-size: 14.5px;
+    line-height: 1.9;
+  }
+  .copybox .text.mono {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 13.5px;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  .note {
+    margin-top: 26px;
+    background: var(--blue-soft);
+    border-left: 4px solid var(--blue);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    font-size: 14.5px;
+    color: var(--ink);
+  }
+  .note b { color: var(--blue); }
+
+  /* ---------- 注意点 ---------- */
+  .cautions { margin-top: 10px; }
+  .caution {
+    background: var(--card);
+    border: 2px solid var(--line);
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin-top: 16px;
+  }
+  .caution h4 { font-size: 16px; font-weight: 900; }
+  .caution p { color: var(--sub); font-size: 14.5px; margin-top: 6px; }
+
+  .webnote {
+    margin-top: 40px;
+    border: 2px dashed var(--line);
+    border-radius: 14px;
+    padding: 22px 24px;
+    font-size: 14.5px;
+    color: var(--sub);
+  }
+  .webnote b { color: var(--ink); }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid var(--line);
+    background: #fff;
+    padding: 44px 0 56px;
+    font-size: 12.5px;
+    color: var(--sub);
+    line-height: 2;
+  }
+  footer .brand {
+    font-family: "Archivo Black", sans-serif;
+    font-size: 13px;
+    letter-spacing: .18em;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  footer .notice { margin-top: 14px; }
+
+  .toast {
+    position: fixed;
+    left: 50%; bottom: 28px;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--ink);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 22px;
+    border-radius: 999px;
+    transition: transform .25s ease;
+    z-index: 10;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="kicker">CLAUDE MOVING GUIDE</span>
+    <h1>Claudeの記憶を、<br>新しいPCへ。</h1>
+    <p class="hero-lead">パソコンを買い替えても、育てたClaudeはそのまま連れていけます。<br>やり方は2つ。どちらも今日できます。</p>
+
+    <div class="diagram" aria-label="古いPCから、記憶のファイルを箱に詰めて、新しいPCへ運ぶ図">
+      <div class="pc old">
+        <div class="screen">
+          <span class="file"></span><span class="file"></span><span class="file"></span>
+        </div>
+        <div class="base"></div>
+        <div class="label">いままでのPC</div>
+      </div>
+      <div class="arrow" aria-hidden="true">&gt;&gt;</div>
+      <div class="carton">
+        <div class="body">
+          <span class="flap l"></span><span class="flap r"></span>
+          <span class="file"></span>
+        </div>
+        <span class="tag">きおく</span>
+        <div class="label">はこぶ</div>
+      </div>
+      <div class="arrow" aria-hidden="true">&gt;&gt;</div>
+      <div class="pc new">
+        <div class="screen"><span class="file"></span></div>
+        <div class="base"></div>
+        <div class="label">あたらしいPC</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="wrap">
+      <h2>まず、これだけ知ってください</h2>
+      <div class="core">
+        <p class="big">Claudeが覚えていることは、<br><em>ぜんぶ ただのファイル。</em></p>
+        <p>あなたの好み・決めごと・作業の続きは、クラウドの向こうではなく、いま使っているPCの中にファイルとして保存されています。ファイルなら、箱に詰めて運べます。それが引っ越しです。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>やり方は2つ。どっちにする？</h2>
+      <p class="h2-sub">迷ったら方法1で十分です。</p>
+      <div class="routes">
+        <a class="route a" href="#method1">
+          <span class="badge">おすすめ・かんたん</span>
+          <h3>方法1<br>Claudeに引き継ぎ書を<br>書いてもらう</h3>
+          <p>コマンド不要。Claudeにお願いするだけ。好みやルール、作業の続きが引き継がれます。</p>
+        </a>
+        <a class="route b" href="#method2">
+          <span class="badge">完全版</span>
+          <h3>方法2<br>設定フォルダを<br>まるごとコピー</h3>
+          <p>細かい設定や自作の道具まで、全部そのまま。ターミナルで2行だけ実行します。</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="method1">
+    <div class="wrap">
+      <h2>方法1：Claudeに引き継ぎ書を書いてもらう</h2>
+      <p class="h2-sub">引っ越しの荷造りを、Claude本人にやってもらう方法です。</p>
+
+      <div class="step">
+        <span class="step-no">STEP 1</span>
+        <div class="step-body">
+          <h4>いままでのPCで、Claudeにお願いする</h4>
+          <p>下の文をそのまま貼り付けてください。</p>
+          <div class="copybox">
+            <div class="head"><span>Claudeに送る言葉</span><button type="button" data-copy="新しいPCに引っ越します。あなたが覚えていること（私の好み・決めごと・進行中の作業・注意点）を、引き継ぎ用のファイル1つにまとめてデスクトップに保存して。">コピー</button></div>
+            <div class="text">新しいPCに引っ越します。あなたが覚えていること（私の好み・決めごと・進行中の作業・注意点）を、引き継ぎ用のファイル1つにまとめてデスクトップに保存して。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <span class="step-no">STEP 2</span>
+        <div class="step-body">
+          <h4>できたファイルを、新しいPCへ送る</h4>
+          <p>AirDrop・USBメモリ・Googleドライブなど、いつもの方法で大丈夫です。</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <span class="step-no">STEP 3</span>
+        <div class="step-body">
+          <h4>新しいPCにClaude Codeを入れて、ログインする</h4>
+          <p>契約はアカウントに紐づいているので、いつものアカウントでログインするだけです。</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <span class="step-no">STEP 4</span>
+        <div class="step-body">
+          <h4>新しいPCのClaudeに、引き継ぎファイルを渡す</h4>
+          <p>ファイルの置き場所（例：デスクトップ）を添えて、こう伝えます。</p>
+          <div class="copybox">
+            <div class="head"><span>Claudeに送る言葉</span><button type="button" data-copy="前のPCからの引き継ぎファイルです。読んで、内容をあなたの記憶に保存してください。場所はデスクトップです。">コピー</button></div>
+            <div class="text">前のPCからの引き継ぎファイルです。読んで、内容をあなたの記憶に保存してください。場所はデスクトップです。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="note"><b>これで完了。</b>好みやルール、作業の続きが新しいPCに引き継がれます。</div>
+    </div>
+  </section>
+
+  <section id="method2">
+    <div class="wrap">
+      <h2>方法2：設定フォルダをまるごとコピー</h2>
+      <p class="h2-sub">Claudeの中身は、ホームフォルダ直下の「.claude」という隠しフォルダと「.claude.json」というファイルに入っています。これを丸ごと運びます。</p>
+
+      <div class="step">
+        <span class="step-no">STEP 1</span>
+        <div class="step-body">
+          <h4>いままでのPCで、1つの圧縮ファイルにまとめる</h4>
+          <p>ターミナルを開いて、次の1行を実行します。</p>
+          <div class="copybox">
+            <div class="head"><span>ターミナルで実行（Mac）</span><button type="button" data-copy="cd ~ && zip -r claude-hikkoshi.zip .claude .claude.json">コピー</button></div>
+            <div class="text mono">cd ~ &amp;&amp; zip -r claude-hikkoshi.zip .claude .claude.json</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <span class="step-no">STEP 2</span>
+        <div class="step-body">
+          <h4>できた claude-hikkoshi.zip を、新しいPCのダウンロードフォルダへ送る</h4>
+          <p>送り方は方法1と同じで、何でも大丈夫です。</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <span class="step-no">STEP 3</span>
+        <div class="step-body">
+          <h4>新しいPCで、荷ほどきする</h4>
+          <p>ターミナルを開いて、次の1行を実行します。</p>
+          <div class="copybox">
+            <div class="head"><span>ターミナルで実行（Mac）</span><button type="button" data-copy="cd ~ && unzip ~/Downloads/claude-hikkoshi.zip">コピー</button></div>
+            <div class="text mono">cd ~ &amp;&amp; unzip ~/Downloads/claude-hikkoshi.zip</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <span class="step-no">STEP 4</span>
+        <div class="step-body">
+          <h4>Claude Codeを起動して、ログインし直す</h4>
+          <p>これで、スキルや細かい設定まで全部そろった状態で使えます。</p>
+        </div>
+      </div>
+
+      <div class="note"><b>ユーザー名が変わる人へ：</b>新旧のPCでユーザー名（ホームフォルダの名前）が違うと、一部の記憶が自動では読み込まれません。その場合は新しいPCのClaudeに「前のPCの記憶を持ってきたので取り込んで」と頼めば、整理してくれます。</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>注意点は、3つだけ</h2>
+      <div class="cautions">
+        <div class="caution">
+          <h4>1. ログインは、新しいPCでやり直し</h4>
+          <p>契約はアカウントに、記憶はPCに入っている、と覚えてください。記憶を運んでも、ログインは別です。</p>
+        </div>
+        <div class="caution">
+          <h4>2. パスワードなどの秘密は、別で運ぶ</h4>
+          <p>パスワードやAPIキーなど秘密の情報は、この引っ越しに含めず、自分で管理して移してください。</p>
+        </div>
+        <div class="caution">
+          <h4>3. 迷ったら方法1でいい</h4>
+          <p>大事なのは「Claudeの記憶はファイルなので、消える前に持ち出せる」ということ。完璧を目指すより、まず引き継ぎ書1枚です。</p>
+        </div>
+      </div>
+
+      <div class="webnote"><b>ウェブ版・アプリ版（claude.ai）を使っている人は？</b><br>そちらの記憶はアカウント側に保存されているので、新しいPCでログインするだけで引き継がれます。このページの手順は、ターミナルで使う「Claude Code」向けです。</div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="brand">RYOSEIWORLD</div>
+    <div>PUBLISHED BY ： RYOSEIWORLD合同会社</div>
+    <div>ISSUED ： 2026-07-29</div>
+    <div class="notice">NOTICE ： Claude および Claude Code は Anthropic, PBC の商標です。本資料は RYOSEIWORLD合同会社が独自にまとめた解説であり、Anthropic 公式の資料ではありません。手順はお使いの環境により異なる場合があります。</div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status">コピーしました</div>
+
+<script>
+  const toast = document.getElementById("toast");
+  let toastTimer = null;
+  const showToast = (msg) => {
+    toast.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 1800);
+  };
+  document.querySelectorAll("button[data-copy]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.copy);
+        btn.textContent = "コピーずみ";
+        btn.classList.add("done");
+        showToast("コピーしました");
+        setTimeout(() => { btn.textContent = "コピー"; btn.classList.remove("done"); }, 2000);
+      } catch (e) {
+        showToast("コピーできませんでした。文面を長押しで選択してください");
+      }
+    });
+  });
+</script>
+</body>
+</html>
