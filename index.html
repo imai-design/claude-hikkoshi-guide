@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Archivo+Black&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20x%3D%224%22%20y%3D%2211%22%20width%3D%2224%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22%23C8A276%22%20stroke%3D%22%23A9834F%22%20stroke-width%3D%222%22%2F%3E%3Cpath%20d%3D%22M4%2013%20L16%206%20L28%2013%22%20fill%3D%22none%22%20stroke%3D%22%23A9834F%22%20stroke-width%3D%222%22%2F%3E%3Crect%20x%3D%2214%22%20y%3D%2211%22%20width%3D%224%22%20height%3D%2216%22%20fill%3D%22%23ffffff%22%20opacity%3D%22.55%22%2F%3E%3C%2Fsvg%3E">
 <style>
   :root {
     --paper: #F5F7FA;
@@ -24,6 +25,7 @@
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
+  html, body { overflow-x: hidden; }
   body {
     font-family: "Zen Kaku Gothic New", "Hiragino Sans", sans-serif;
     background: var(--paper);
@@ -190,8 +192,18 @@
     font-size: 12px;
     font-weight: 700;
     color: var(--sub);
-    margin-top: 14px;
+    margin-top: 28px;
     letter-spacing: .1em;
+  }
+  @media (max-width: 480px) {
+    .diagram { gap: 10px; }
+    .pc .screen { width: 76px; height: 52px; border-width: 2px; }
+    .pc .base { width: 90px; height: 6px; }
+    .carton .body { width: 68px; height: 48px; border-width: 2px; }
+    .carton .flap { border-width: 2px; height: 9px; top: -9px; }
+    .arrow { font-size: 13px; padding-bottom: 32px; }
+    .tag { font-size: 10px; right: -10px; bottom: -10px; padding: 2px 8px 2px 14px; }
+    .pc .label, .carton .label { font-size: 10.5px; letter-spacing: .04em; }
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
